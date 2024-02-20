@@ -52,7 +52,7 @@ function Registation(){
             body:JSON.stringify({tiger})
             
         }
-        fetch('https://login-back-tau.vercel.app',requestoption).then(result=>{
+        fetch('https://login-back-tau.vercel.app/save',requestoption).then(result=>{
             result.json().then(resp=>{
                 console.log(resp)
                 setMsg(resp.msg)
