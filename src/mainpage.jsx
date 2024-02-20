@@ -18,23 +18,29 @@ function Main(){
    const eml=atob(eml2)
    const pass=atob(sessionStorage.getItem('ness'))
       function update(){
-        if(pass===oldpass){
+        
           const requestoption={
             method:'PUT',
             headers:{'Content-type':'application/json'},
             body:JSON.stringify({oldpass,newpass,eml})
         }
-        fetch('https://login-back-tau.vercel.app/update',requestoption).then(result=>{
+        fetch('https://login-back-54bk.vercel.app/update',requestoption).then(result=>{
             result.json().then(resp=>{
                 console.log(resp)
+                 setMassige(resp.msg)
+                 if(resp.msg==="successfull change"){
+                  sessionStorage.setItem('ness',btoa(newpass))
+                  setCngpass(true)
+                  setMassige("")
+                  setOldpass("")
+                  setNewpass("")
+                 }
+                
             })
         })
-        sessionStorage.setItem('ness',btoa(newpass))
-        setCngpass(true)
-        }else{
-         setMassige('old password is wrong')
-        }
-    
+        
+       
+        
       }
     
    

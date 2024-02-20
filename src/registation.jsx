@@ -12,22 +12,27 @@ function Registation(){
    const [checkotp , setCheckotp ] = useState(false);
    const [tiger ,  setTiger] = useState("");
    const [msg , setMsg ] = useState("");
+   const [otp , setOtp ] = useState("");
           const [color , setColor ] = useState(true);
      
     function  senddata(){
-        if(checkotp==false){
-            setMsg('email already register')
-           }
+       
        if(password===conformpassword && password!=""&&conformpassword!=""&&email!=""&&firstname!=""&&lastname!=""){
         const requestoption={
             method:'POST',
             headers:{'Content-type':'application/json'},
             body:JSON.stringify({firstname,lastname,email,password})
         }
-        fetch('https://login-back-tau.vercel.app',requestoption).then(result=>{
+        fetch('https://login-back-54bk.vercel.app',requestoption).then(result=>{
             result.json().then(resp=>{
-               setMsg(resp.msg)
-               if(resp.msg==="otp send successfully"){
+               if(resp.msg==='failed'){
+                setMsg("email id alredy register")
+               }
+               
+                 
+               if(resp[0].msg==="otp sent successfully!"){
+                setMsg(resp[0].msg)
+               setOtp(resp[1].otp)
                 setForm(false)
                 setCheckotp(true)
                }
@@ -35,8 +40,12 @@ function Registation(){
             })
             
         })
-          
-    
+         
+     
+            
+           
+       
+        
        }else{
         setMsg("please fill all data Correctly")
         setColor(true)
@@ -46,21 +55,25 @@ function Registation(){
     }
     const navigate = useNavigate();
     function sendotp(){
-        const requestoption={
-            method:'POST',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify({tiger})
-            
-        }
-        fetch('https://login-back-tau.vercel.app/save',requestoption).then(result=>{
-            result.json().then(resp=>{
-                console.log(resp)
-                setMsg(resp.msg)
-                setTimeout(() => {
-                    navigate('/login')
-                }, 3000);
-        })
-       })
+          if(otp===tiger){
+            const requestoption={
+                method:'POST',
+                headers:{'Content-type':'application/json'},
+                body:JSON.stringify({tiger,firstname,lastname,email,password})
+                
+            }
+            fetch('https://login-back-54bk.vercel.app/save',requestoption).then(result=>{
+                result.json().then(resp=>{
+                    console.log(resp)
+                    setMsg(resp.msg)
+                    setTimeout(() => {
+                        navigate('/login')
+                    }, 3000);
+            })
+           })
+          }else{
+            setMsg("wrong otp")
+          }
     }
     
    

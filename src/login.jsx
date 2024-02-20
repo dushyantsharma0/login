@@ -17,21 +17,27 @@ function Login(){
       
 
     function check(){
-        fetch("https://login-back-tau.vercel.app/data").then(result=>{
+        const requestoption={
+            method:'POST',
+            headers:{'Content-type':'application/json'},
+            body:JSON.stringify({email,password})
+        }
+        fetch("https://login-back-54bk.vercel.app/login",requestoption).then(result=>{
             result.json().then(resp=>{
+                setMsgh1(resp.msg)
                 setAlldata(resp)
+                     if(resp.msg==="login successfull"){
+                        let encodedeml = btoa(email);
+                        let encodedpass=btoa(password);
+                        sessionStorage.setItem('yourSessionKey',encodedeml)
+                        sessionStorage.setItem('ness',encodedpass)
+                        navigate('/main');
+                     }
+            
                 
-            resp.map((item)=>{
-                if(item.email===email&&item.password===password){
-                    let encodedeml = btoa(email);
-                    let encodedpass=btoa(password);
-                    sessionStorage.setItem('yourSessionKey',encodedeml)
-                    sessionStorage.setItem('ness',encodedpass)
-                    navigate('/main');
-                }else{
-                    setMsgh1('wrong email and password')
-                }
-            })
+                   
+          
+           
                 
             })
         })
